@@ -15,7 +15,7 @@ export default function SignUpForm() {
     const router = useRouter()
     const [verifying, setVerifying] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [verificationCode, setverificationCode] =  useState("");
+    const [verificationCode, setVerificationCode] =  useState("");
     const [isauthError, setAuthError] = useState<string | null>(null);
     const [verificationError, setVerificationError] = useState<string | null>(null);
     const { signUp, isLoaded, setActive } = useSignUp();
@@ -41,44 +41,45 @@ export default function SignUpForm() {
         setAuthError(null)
 
         try {
-            signUp.create({
+            await signUp.create({
                 emailAddress: data.email,
                 password: data.password,
-            })
+            });
+
             await signUp.prepareEmailAddressVerification({
                 strategy: "email_code"
-            })
-            setVerifying(true)
+            });
+            setVerifying(true);
         } catch (error: any) {
-            console.error("Signup error: ", error)
+            console.error("Signup error: ", error);
             setAuthError(
                 error.errors?.[0]?.message || "An error occured during the signup, please try again"
-            )
-
+            );
         } finally {
             setIsSubmitting(false)
         }
-        
     };
+
     // can also use zod event instead of form event for the handleVerificationSubmit
     const handleVerificationSubmit = async (e: React.FormEvent<HTMLFormElement>) => { 
-        e.preventDefault()
-        if (!isLoaded || ! signUp) return
-        setIsSubmitting(true)
-        setAuthError(null)
+        e.preventDefault();
+
+        if (!isLoaded || ! signUp) return;
+        setIsSubmitting(true);
+        setAuthError(null);
 
         try{
             const result = await signUp.attemptEmailAddressVerification({
-                code: verificationCode 
-            })
-            // tobo: consol result, you can remove after it works
+                code: verificationCode,
+            });
+            // todo: consol result, you can remove after it works
             console.log(result);
             if (result.status === "complete"){
                 await setActive({session: result.
-                    createdSessionId})
-                    router.push("/dashboard")
+                    createdSessionId});
+                    router.push("/dashboard");
             }else {
-                console.error("Verification incomplete", result)
+                console.error("Verification incomplete:", result)
                 setVerificationError("A verification error occured during the signup, please try again");
             }
         } catch (error: any){
@@ -87,7 +88,6 @@ export default function SignUpForm() {
         }finally{
             setIsSubmitting(false);
         }
-
     };
     
     if (verifying) {
