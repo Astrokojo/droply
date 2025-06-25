@@ -1,0 +1,2 @@
+continue from 2:23:00
+run <npm install @heroui/react framer-motion>
