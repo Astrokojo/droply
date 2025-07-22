@@ -1,3 +1,4 @@
-continue from 2:40:00
+continue from 3:0:00
 Clerk MiddleWare
-ImageKit
+ImageKit(review the imagekit section)
+"npm install @imagekit/next"
