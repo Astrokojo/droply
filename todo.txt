@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 
+=======
+continue from 3:0:00
+>>>>>>> 489ec6af8f37a76db7b0a7384d1b5bd7ad48b22f
 Clerk MiddleWare
-ImageKit
+ImageKit(review the imagekit section)
+"npm install @imagekit/next"
