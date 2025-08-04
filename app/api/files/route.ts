@@ -3,7 +3,7 @@ import { files } from "@/lib/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq, and, isNull } from "drizzle-orm";
 import { NextResponse } from "next/server";
-
+// review the drizzle orm docs for this section
 export async function GET(request: NextResponse){
     try {
     const {userId} = await auth()
@@ -18,7 +18,6 @@ export async function GET(request: NextResponse){
         return NextResponse.json({error: "Unauthorized"}, {status: 401});
     }
     
-// review the drizzle orm docs for this section
 // connect to db and fetch from a specific folder based on parentid. 
     let userFiles;
     if (parentId){
