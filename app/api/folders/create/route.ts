@@ -5,6 +5,7 @@ import { eq, and } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 import { NextRequest, NextResponse } from "next/server";
 
+
 export async function POST(request: NextRequest) {
     try {
         const { userId } = await auth()
