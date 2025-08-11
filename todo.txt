@@ -3,3 +3,6 @@ ImageKit
 Folders
 Files 
 File upload 3:56:39
+4:24:00
+Assignments
+*create the routes for delete, trash and then empty trash. Cehck your business logic against the git docs

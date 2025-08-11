@@ -20,14 +20,15 @@ export async function POST(request: NextRequest){
     return NextResponse.json({error: 
             "Unauthorized"}, {status:401});
    }
+     
    if(!imagekit || !imagekit.url){
      return NextResponse.json({error: 
-            "Invalid file upload data"}, {status:401});
+            "Invalid file upload data"}, {status:400});
    }
 
    const fileData = {
     name: imagekit.name || "Untitled",
-      path: imagekit.filePath || `/droply/${userId}/${imagekit.name}`,
+      path: imagekit.filePath || `/droply/${userId}/${imagekit.name || "Untitled"}`,
       size: imagekit.size || 0,
       type: imagekit.fileType || "image",
       fileUrl: imagekit.url,
@@ -40,9 +41,12 @@ export async function POST(request: NextRequest){
    };
 
    const [newFile] = await db.insert(files).values(fileData).returning()
-   return  NextResponse.json(newFile)
-} catch {
+   if (!newFile) {
+     return NextResponse.json({ error: "File upload failed" }, { status: 500 });
+   }
+   return NextResponse.json(newFile)
+} catch (error) {
+    console.error("Error saving info to db:", error);
     return NextResponse.json({error: 
-            "Couldn't save info to db"}, {status:500});
-    
+            error instanceof Error ? error.message : "Couldn't save info to db"}, {status:500});
 }};
